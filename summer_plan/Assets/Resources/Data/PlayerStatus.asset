@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: PlayerStatus
   m_EditorClassIdentifier: 
   _Hp: 3
-  _Atk: 1
-  _MoveSpeed: 10
-  _isSwoon: 0
+  _MoveSpeed: 30
