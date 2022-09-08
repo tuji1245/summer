@@ -10,19 +10,21 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	private GameObject _bullet;
+	[SerializeField]
+	private float _bulletPower;
 
 	private void Start()
 	{
 		_status = Resources.Load<PayerStatus>("Data/PlayerStatus");
 		_status = Instantiate(_status); // •¡»
-		_status._MoveSpeed = 1.0f;
 		_input = new Input();
 		_input.Enable();
 		_input.Player.Fire.performed += x => Fire();
 
 		_cursor = GameObject.Find("Cursor").transform;
 
-		_bullet = Resources.Load<GameObject>("prefab/Bullet");
+		if(_bullet == null)
+			_bullet = Resources.Load<GameObject>("Prefab/Bullet");
 	}
 
 	private void FixedUpdate()
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
 		Vector2 selfPos = transform.position;
 		Vector2 dir = (targetPos - selfPos).normalized;
 		var bullet = GameObject.Instantiate(_bullet, selfPos, Quaternion.identity);
-		var movement = bullet.AddComponent<Movement>();
-		movement._bulletStatus = new BulletStatus(dir, 2);
+		var movement = bullet.AddComponent<Bullet>();
+		movement._bulletStatus = new BulletStatus(dir, _bulletPower);
 	}
 }

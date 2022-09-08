@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerStatus
   m_EditorClassIdentifier: 
   _Hp: 3
-  _MoveSpeed: 30
+  _MoveSpeed: 10

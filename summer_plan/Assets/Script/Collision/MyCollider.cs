@@ -1,39 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-
-public class CollisionManager : MonoBehaviour
+public class MyCollider : MonoBehaviour
 {
 	public struct Poligon
 	{
 		public List<Vector2> _Vertex;
 	}
-	List<Poligon> _poligonList;
-	UnityEvent _onCollision;
 
-
-	private void Start()
-	{
-		_poligonList = new List<Poligon>();
-	}
-
-	public void AddList(GameObject gameObject, Poligon poligon)
-	{
-		_poligonList.Add(poligon);
-	}
-
-	private void FixedUpdate()
-	{
-		foreach(var other in _poligonList)
-		{
-			if (!Check(Player.pos, other)) continue;
-			
-			_
-
-		}
-	}
-	private bool Check(Vector2 p, Poligon other)
+	static public bool CheckPointPolygon(Vector2 p, Poligon other)
 	{
 		int hitCount = 0;
 
@@ -45,7 +20,7 @@ public class CollisionManager : MonoBehaviour
 			// 水平チェック
 			if (first.y == second.y) continue;
 
-			{   // yの範囲に入っているか
+			{	// yの範囲に入っているか
 				float y_bigger = (first.y > second.y) ? first.y : second.y;
 				float y_smaller = (first.y < second.y) ? first.y : second.y;
 				if (p.y < y_smaller || y_bigger <= p.y) continue;
@@ -59,11 +34,5 @@ public class CollisionManager : MonoBehaviour
 		}
 
 		return ((hitCount % 2) == 0) ? false: true;
-	}
-
-
-	private void OnCollisionEnter(Collision collision)
-	{
-		if(collision.transform.tag)
 	}
 }
