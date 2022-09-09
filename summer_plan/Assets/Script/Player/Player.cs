@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	private PayerStatus _status;
+	public int _HP { get { return _status._Hp; } }
 	private Input _input;
 	private Transform _cursor;
 
@@ -50,5 +51,12 @@ public class Player : MonoBehaviour
 		var bullet = GameObject.Instantiate(_bullet, selfPos, Quaternion.identity);
 		var movement = bullet.AddComponent<Bullet>();
 		movement._bulletStatus = new BulletStatus(dir, _bulletPower);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag != "Enemy") { return; }
+		Debug.Log(collision.GetComponent<Enemy>()._Atk);
+		_status._Hp -= collision.GetComponent<Enemy>()._Atk;
 	}
 }

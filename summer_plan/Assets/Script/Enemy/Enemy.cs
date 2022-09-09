@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-	MyCollider.Poligon _polygon;
 	float _range;
 	Vector2[] _offset;
 
 	GameObject _player;
 	[SerializeField]
 	float _moveSpeed;
+	[SerializeField]
+	int _atk;
+
+	public int _Atk { get { return _atk; } }
 
 	[HideInInspector]
 	public EnemyGenerator _Generator;
 
 	private void Start()
 	{
-		_range = 0.5f;
+		_range = 1.0f;
 		_offset = new Vector2[4];
 		_offset[0] = new Vector2(-_range, _range);
 		_offset[1] = new Vector2(_range, _range);
 		_offset[2] = new Vector2(_range, -_range);
 		_offset[3] = new Vector2(-_range, -_range);
-		calc();
 
 		_player = GameObject.Find("Player");
 	}
 	private void FixedUpdate()
 	{
-		drawNeer(Time.fixedDeltaTime);
-		calc();
+		drawNeer(MyTime.gameObjectTime);
 	}
 
 	void drawNeer(float tick)
@@ -43,23 +44,23 @@ public class Enemy : MonoBehaviour
 		transform.position = new Vector3(selfPos.x, selfPos.y, 0);
 	}
 
-	void calc()
+	MyCollider.Polygon calc()
 	{
-		var vertex = new List<Vector2>();
-		for (int i = 0; i > 4; i++)
+		var polygon = new MyCollider.Polygon();
+		for (int i = 0; i < 4; i++)
 		{
 			Vector2 pos = transform.position;
 			pos += _offset[i];
-			vertex.Add(pos);
+			polygon._Vertex.Add(pos);
 		}
-		_polygon._Vertex = vertex;
+		return polygon;
 	}
-
-	private void OnTriggerEnter2D(Collider2D collision)
+	private void OnTriggerStay2D(Collider2D collision)
 	{
 		if (collision.tag != "bullet") { return; }
-		bool hit = MyCollider.CheckPointPolygon(collision.transform.position, _polygon);
 
+		bool hit = MyCollider.CheckPointPolygon(collision.transform.position, calc());
+		if(!hit){ return; }
 		_Generator.DestroyEnemy(gameObject);
 	}
 }
